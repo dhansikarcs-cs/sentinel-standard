@@ -12,7 +12,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install Dependencies
-        run: pip install cryptography
+        run: pip install cryptography jsonschema
       - name: Run Core Test Suite
         run: |
           PYTHONPATH=. python -m unittest tests/test_cryptography.py tests/test_nlp_pipeline.py
