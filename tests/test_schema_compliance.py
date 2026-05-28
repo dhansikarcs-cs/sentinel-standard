@@ -1,19 +1,22 @@
 import unittest
 import json
 import os
-from jsonschema import validate
+import sys
+
+# Dynamic Module Resolution: Force Python to see your root 'src' directory
+current_test_dir = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.dirname(current_test_dir)
+if repo_root not in sys.path:
+    sys.path.insert(0, repo_root)
+
+# Safe imports after path routing is established
 from src.core.cryptography import SentinelSecurityCore
 from src.utils.time_helpers import obfuscate_timestamp
+from jsonschema import validate
 
 class TestSchemaCompliance(unittest.TestCase):
     def setUp(self):
-        # Anchor the path directly to the exact physical location of this test file
-        current_test_dir = os.path.dirname(os.path.abspath(__file__))
-        
-        # Navigate up one step to the repository root directory
-        repo_root = os.path.dirname(current_test_dir)
-        
-        # Target the exact location of the schema file
+        # Target the exact schema physical file path
         schema_path = os.path.join(repo_root, "schemas", "v1", "biometric_telemetry.schema.json")
         
         with open(schema_path, "r") as f:
