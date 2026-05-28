@@ -1,12 +1,17 @@
 import unittest
 import json
+import os
 from jsonschema import validate
 from src.core.cryptography import SentinelSecurityCore
 from src.utils.time_helpers import obfuscate_timestamp
 
 class TestSchemaCompliance(unittest.TestCase):
     def setUp(self):
-        with open("schemas/v1/biometric_telemetry.schema.json", "r") as f:
+        # Dynamically calculate the safe workspace path for both local and GitHub Runner execution
+        base_dir = os.environ.get('GITHUB_WORKSPACE', os.getcwd())
+        schema_path = os.path.join(base_dir, "schemas/v1/biometric_telemetry.schema.json")
+        
+        with open(schema_path, "r") as f:
             self.bio_schema = json.load(f)
         self.engine = SentinelSecurityCore("secure_pass_123")
 

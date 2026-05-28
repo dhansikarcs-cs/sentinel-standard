@@ -3,6 +3,8 @@ on: [push, pull_request]
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -12,4 +14,6 @@ jobs:
       - name: Install Dependencies
         run: pip install jsonschema
       - name: Run Schema Validation Tests
-        run: python -m unittest tests/test_schema_compliance.py
+        run: |
+          export GITHUB_WORKSPACE=$GITHUB_WORKSPACE
+          python -m unittest tests/test_schema_compliance.py
