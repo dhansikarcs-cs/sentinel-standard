@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org",
+  "title": "SentinelSecurePsychophysiologicalJournal",
+  "version": "1.2.0",
+  "type": "object",
+  "required": ["metadata", "legal_governance", "encrypted_journal_envelope"],
+  "additionalProperties": false,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["journal_entry_id", "linked_biometric_packet_id"],
+      "properties": {
+        "journal_entry_id": { "type": "string", "format": "uuid" },
+        "linked_biometric_packet_id": { "type": "string", "format": "uuid" }
+      }
+    },
+    "legal_governance": {
+      "type": "object",
+      "required": ["patient_hash_sha256", "retention_expiration_epoch"],
+      "properties": {
+        "patient_hash_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "retention_expiration_epoch": { "type": "integer" }
+      }
+    },
+    "encrypted_journal_envelope": {
+      "type": "object",
+      "required": ["cipher_algorithm", "nonce_b64", "ciphertext_b64"],
+      "properties": {
+        "cipher_algorithm": { "type": "string", "const": "AES-256-GCM" },
+        "nonce_b64": { "type": "string", "pattern": "^[A-Za-z0-9+/]{22}==$" },
+        "ciphertext_b64": { "type": "string", "pattern": "^[A-Za-z0-9+/]+={0,2}$" }
+      }
+    }
+  }
+}

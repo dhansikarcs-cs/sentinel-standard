@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org",
+  "title": "SentinelSecureBiometricTelemetry",
+  "version": "1.2.0",
+  "type": "object",
+  "required": ["metadata", "crypto_envelope"],
+  "additionalProperties": false,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["packet_id", "coarse_timestamp_ms", "timezone_offset_min"],
+      "properties": {
+        "packet_id": { "type": "string", "format": "uuid" },
+        "coarse_timestamp_ms": { "type": "integer" },
+        "timezone_offset_min": { "type": "integer", "minimum": -720, "maximum": 840 }
+      }
+    },
+    "crypto_envelope": {
+      "type": "object",
+      "required": ["cipher_algorithm", "nonce_b64", "ciphertext_b64"],
+      "properties": {
+        "cipher_algorithm": { "type": "string", "const": "AES-256-GCM" },
+        "nonce_b64": { "type": "string", "pattern": "^[A-Za-z0-9+/]{22}==$" },
+        "ciphertext_b64": { "type": "string", "pattern": "^[A-Za-z0-9+/]+={0,2}$" }
+      }
+    }
+  }
+}
