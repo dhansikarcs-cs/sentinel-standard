@@ -15,5 +15,4 @@ jobs:
         run: pip install jsonschema
       - name: Run Schema Validation Tests
         run: |
-          export GITHUB_WORKSPACE=$GITHUB_WORKSPACE
-          python -m unittest tests/test_schema_compliance.py
+          PYTHONPATH=. python -m unittest tests/test_schema_compliance.py

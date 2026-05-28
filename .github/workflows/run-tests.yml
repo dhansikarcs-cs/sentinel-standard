@@ -15,5 +15,4 @@ jobs:
         run: pip install cryptography
       - name: Run Core Test Suite
         run: |
-          python -m unittest tests/test_cryptography.py
-          python -m unittest tests/test_nlp_pipeline.py
+          PYTHONPATH=. python -m unittest tests/test_cryptography.py tests/test_nlp_pipeline.py
