@@ -3,21 +3,22 @@ import json
 import os
 import sys
 
-# Dynamic Module Resolution: Force Python to see your root 'src' directory
-current_test_dir = os.path.dirname(os.path.abspath(__file__))
-repo_root = os.path.dirname(current_test_dir)
-if repo_root not in sys.path:
-    sys.path.insert(0, repo_root)
+# Compute base repository root from this file's path coordinates
+TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(TESTS_DIR)
 
-# Safe imports after path routing is established
+# Force injection into python module lookup tables
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
 from src.core.cryptography import SentinelSecurityCore
 from src.utils.time_helpers import obfuscate_timestamp
 from jsonschema import validate
 
 class TestSchemaCompliance(unittest.TestCase):
     def setUp(self):
-        # Target the exact schema physical file path
-        schema_path = os.path.join(repo_root, "schemas", "v1", "biometric_telemetry.schema.json")
+        # Build direct absolute path to the telemetry schema configuration
+        schema_path = os.path.join(REPO_ROOT, "schemas", "v1", "biometric_telemetry.schema.json")
         
         with open(schema_path, "r") as f:
             self.bio_schema = json.load(f)
